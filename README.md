@@ -4,6 +4,7 @@ Scripts written in pyrpl 0.9.8.0 to control a STEMlab 125-14 Gen 2 Red Pitaya fo
 (1) Scanning the transmission of the cavity, sweep different modulation depths for lock-in detection. 
 (2) Script to analyse the data, finding the optimal modulation depth and phase.
 (3) Lockbox script which scans the cavity, identifies the error signal and attempts to hold a lock. If lock is lost then will attempt to relock around last known locking point. Also has toggle-able network analyser functionality such that the resonances in the system can be identified.
+(4) GUI for running the lockbox script.
 
 Physical layout is as follows:
 
@@ -27,5 +28,13 @@ Workflow starting from scratch with an arbitrary cavity is:
 
 ##Lockinscript.py and LockinscriptPIDscan.py 
 
-Both are used for scanning the cavity and performing lock-in detection across a range of modulation depths. Difference is how the piezo is scanned and subsequently measure. For Lockinscript.py the piezo is modulated by an asg ramp whilst a scope trace reads for the duration of the ramp. This is a fast measurement a la scop (as fast as you set the ramp to be) 
+Both are used for scanning the cavity and performing lock-in detection across a range of modulation depths. Difference is how the piezo is scanned and subsequently measure. For Lockinscript.py the piezo is modulated by an asg ramp whilst a scope trace reads for the duration of the ramp. This is a fast measurement a-la oscilloscope (as fast as you set the ramp to be) but you are limited to the 16384 (2^14) ADC codes within a single RP DAQ memory bus for both the ramp and scope. The ramp particularly adds digitisation noise to the scans. 
+
+Meanwhile, LockinscriptPIDscan.py uses the same scanning technique as the LOCKBOX whereby the PID module is initialised with P=I=D=0 and then pid.ival (the output voltage) is stepped across a range. Scope and IQ are still used but for pointwise measurements for each scan step.
+
+
+
+
+
+
 
